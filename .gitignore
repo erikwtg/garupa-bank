@@ -1,0 +1,22 @@
+# Arquivos de ambiente
+server/.env
+webapp/.env
+server/node_modules
+server/dist
+
+# Diretórios de build do frontend (Vue.js)
+webapp/node_modules
+webapp/dist
+webapp/.env
+webapp/dist/
+webapp/.vite/
+webapp/.output/
+
+# Node.js e dependências
+node_modules/
+
+# Arquivos de ambiente
+.env
+
+# Cache do Vite e outros
+.vite/
