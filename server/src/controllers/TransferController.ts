@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction} from "express"
+import express from "express"
 import { ZodError } from "zod"
 import { TransferEntity } from "../entities/TransferEntity.ts"
 import { TransferFactory } from "../factories/TransferFactory.ts"
@@ -7,7 +7,7 @@ import { createTransferSchema } from "../schemas/createTransferSchema.ts"
 import { getTransferSchema } from "../schemas/getTransferSchema.ts"
 
 export class TransferController {
-  static async create(request: Request, response: Response, next: NextFunction) {
+  static async create(request: express.Request, response: express.Response) {
     try{
       const validatedData = createTransferSchema.parse(request.body)
 
@@ -29,7 +29,7 @@ export class TransferController {
     }
   }
 
-  static async getAll(request: Request, response: Response, next: NextFunction) {
+  static async getAll(request: Request, response: Response) {
     try{
       const transferService = TransferFactory.getInstance()
   
@@ -47,7 +47,7 @@ export class TransferController {
     }
   }
 
-  static async getById(request: Request, response: Response, next: NextFunction) {
+  static async getById(request: Request, response: Response) {
     try{
       const validatedData = getTransferSchema.parse(request.params)
 

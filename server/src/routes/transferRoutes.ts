@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { TransferController } from "../controllers/TransferController"
+import { TransferController } from "../controllers/TransferController.ts"
 
 const route = Router()
 
