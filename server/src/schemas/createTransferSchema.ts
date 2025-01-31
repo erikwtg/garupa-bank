@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const createTransferSchema = z.object({
-  externalId: z.string().min(1, "externalId é obrigatório"),
+  externalId: z.string().optional(),
   amount: z.number().positive("amount deve ser um número positivo"),
   expectedOn: z.string().datetime().optional().transform((val) => val ? new Date(val) : undefined),
   status: z.string().optional(),
