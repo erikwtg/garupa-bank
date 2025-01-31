@@ -1,0 +1,20 @@
+CREATE TABLE "transactions" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"external_id" text NOT NULL,
+	"amount" numeric(10, 2) NOT NULL,
+	"expected_on" timestamp,
+	"status" text NOT NULL,
+	"transaction_type" text NOT NULL,
+	"transfer_method" text,
+	"account_holder" text,
+	"account_number" text,
+	"agency_number" text,
+	"bank_code" text,
+	"beneficiary_account_holder" text,
+	"beneficiary_account_number" text,
+	"beneficiary_agency_number" text,
+	"beneficiary_bank_code" text,
+	"transaction_description" text,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
