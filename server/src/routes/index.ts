@@ -3,6 +3,6 @@ import TransferRoutes from "./transferRoutes.ts"
 
 const route = Router()
 
-route.use("/transfer", TransferRoutes)
+route.use("/transfers", TransferRoutes)
 
 export default route
