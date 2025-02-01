@@ -1,4 +1,4 @@
-import type { Config } from "drizzle-kit";
+import type { Config } from "drizzle-kit"
 
 export default {
   schema: "./src/database/schema.ts",
@@ -12,4 +12,4 @@ export default {
     port: parseInt(process.env.DB_PORT!, 10),
     ssl: false
   },
-} satisfies Config;
+} satisfies Config

@@ -9,6 +9,8 @@ services:
   server:
     <<: *shared-environment
     image: garupa-server
+    environment:
+      DB_URL: postgres
     build:
       context: ./server
       dockerfile: docker/Dockerfile
@@ -30,17 +32,17 @@ services:
     ports:
       - 5432:5432
   
-  webapp:
-    <<: *shared-environment
-    image: garupa-webapp
-    build:
-      context: ./webapp
-      dockerfile: docker/Dockerfile
-    # command: npm run dev
-    volumes:
-      - ./webapp:/app/
-    ports:
-      - 80:80
+  # webapp:
+  #   <<: *shared-environment
+  #   image: garupa-webapp
+  #   build:
+  #     context: ./webapp
+  #     dockerfile: docker/Dockerfile
+  #   # command: npm run dev
+  #   volumes:
+  #     - ./webapp:/app/
+  #   ports:
+  #     - 80:80
 
 volumes:
   postgres-data:

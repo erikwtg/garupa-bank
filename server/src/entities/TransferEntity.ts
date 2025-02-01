@@ -1,33 +1,33 @@
+import { TRANSACTION_STATUS } from "../constants/transactionStatus.ts"
+
 export class TransferEntity {
   id?: number
   externalId?: string
-  amount?: number
+  orderId?: string
+  accountId: number
+  amount: number
   expectedOn?: Date
+  dueDate?: Date
   status?: string
-  transactionType?: string
+  transactionType: string
   transferMethod?: string
-  accountHolder?: string  // Tornar obrigatório após implementar
-  accountNumber?: string  // Tornar obrigatório após implementar
-  agencyNumber?: string  // Tornar obrigatório após implementar
-  bankCode?: string // Tornar obrigatório após implementar
-  beneficiaryAccountHolder?: string // Tornar obrigatório após implementar
-  beneficiaryAccountNumber?: string // Tornar obrigatório após implementar
-  beneficiaryAgencyNumber?: string // Tornar obrigatório após implementar
-  beneficiaryBankCode?: string // Tornar obrigatório após implementar
+  beneficiaryAccountHolder?: number // Tornar obrigatório após implementar
+  beneficiaryAccountNumber?: number // Tornar obrigatório após implementar
+  beneficiaryAgencyNumber?: number // Tornar obrigatório após implementar
+  beneficiaryBankCode?: number // Tornar obrigatório após implementar
   transactionDescription?: string
 
   constructor({
     id,
     externalId,
+    orderId,
+    accountId,
     amount,
     expectedOn,
-    status = 'pending',
+    dueDate,
+    status = TRANSACTION_STATUS.PENDING,
     transactionType,
     transferMethod,
-    accountHolder,  
-    accountNumber,  
-    agencyNumber,  
-    bankCode,
     beneficiaryAccountHolder,  
     beneficiaryAccountNumber,  
     beneficiaryAgencyNumber,  
@@ -36,32 +36,30 @@ export class TransferEntity {
   }: {
     id?: number
     externalId?: string
-    amount?: number
+    orderId?: string
+    accountId: number
+    amount: number
     expectedOn?: Date
+    dueDate?: Date
     status?: string
-    transactionType?: string
+    transactionType: string
     transferMethod?: string
-    accountHolder?: string  // Tornar obrigatório após implementar
-    accountNumber?: string  // Tornar obrigatório após implementar
-    agencyNumber?: string  // Tornar obrigatório após implementar
-    bankCode?: string // Tornar obrigatório após implementar
-    beneficiaryAccountHolder?: string  // Tornar obrigatório após implementar
-    beneficiaryAccountNumber?: string  // Tornar obrigatório após implementar
-    beneficiaryAgencyNumber?: string  // Tornar obrigatório após implementar
-    beneficiaryBankCode?: string // Tornar obrigatório após implementar
+    beneficiaryAccountHolder?: number  // Tornar obrigatório após implementar
+    beneficiaryAccountNumber?: number  // Tornar obrigatório após implementar
+    beneficiaryAgencyNumber?: number  // Tornar obrigatório após implementar
+    beneficiaryBankCode?: number // Tornar obrigatório após implementar
     transactionDescription?: string
   }) {
     this.id = id
     this.externalId = externalId
+    this.orderId = orderId
+    this.accountId = accountId
     this.amount = amount
     this.expectedOn = expectedOn
+    this.dueDate = dueDate
     this.status = status
     this.transactionType = transactionType
     this.transferMethod = transferMethod
-    this.accountHolder = accountHolder  
-    this.accountNumber = accountNumber  
-    this.agencyNumber = agencyNumber  
-    this.bankCode = bankCode
     this.beneficiaryAccountHolder = beneficiaryAccountHolder  
     this.beneficiaryAccountNumber = beneficiaryAccountNumber  
     this.beneficiaryAgencyNumber = beneficiaryAgencyNumber  
