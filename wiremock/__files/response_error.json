@@ -1,0 +1,9 @@
+{
+  "status": 500,
+  "message": "Flha ao gerar ordem de transferencia!",
+  "data": {
+    "transactionId": "{{randomValue length=10 type='NUMERIC'}}",
+    "order_id": "{{request.body.orderId}}",
+    "amount": "{{request.body.amount}}"
+  }
+}

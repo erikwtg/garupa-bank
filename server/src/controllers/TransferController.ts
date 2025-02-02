@@ -40,21 +40,23 @@ export class TransferController {
         let newOrder = new OrderIntegrationServiceDTO(newTransfer)
         const orderIntegrationService = new OrderIntegrationService
 
-        await orderIntegrationService.sendOrder(newOrder)
+        const sendedOrder = await orderIntegrationService.sendOrder(newOrder)
+
+        const status = sendedOrder ? TRANSACTION_STATUS.CONFIRMED : TRANSACTION_STATUS.PROCESSING
 
         // Todo[Erik] - Refatorar validação para UPDATE da transação
-        await transferService.update(createdTransfer[0].id, { status: TRANSACTION_STATUS.PROCESSING })
+        await transferService.update(createdTransfer[0].id, { status })
       }
 
-      response.status(201).json({ message: "Transferência efetuada com sucesso!" })
+      return response.status(201).json({ message: "Transferência efetuada com sucesso!" })
     } catch(error) {
       if (error instanceof ZodError) {
-        response.status(400).json({ error: error.errors })
+        return response.status(400).json({ error: error.errors })
       }
 
       if (error instanceof Error) {
         console.log(error)
-        response.status(500).json({ error: error.message })
+        return response.status(500).json({ error: error.message })
       }
     }
   }
@@ -65,14 +67,14 @@ export class TransferController {
   
       const allTransfers = await transferService.getAll()
   
-      response.status(200).json(allTransfers)
+      return response.status(200).json(allTransfers)
     } catch(error) {
       if (error instanceof ZodError) {
-        response.status(400).json({ error: error.errors })
+        return response.status(400).json({ error: error.errors })
       } 
   
       if (error instanceof Error) {
-        response.status(500).json({ error: error.message })
+        return response.status(500).json({ error: error.message })
       }
     }
   }
@@ -89,14 +91,14 @@ export class TransferController {
         throw new Error("Transferência não encontrada")
       }
 
-      response.status(200).json(transferById)
+      return response.status(200).json(transferById)
     } catch(error) {
       if (error instanceof ZodError) {
-        response.status(400).json({ error: error.errors })
+        return response.status(400).json({ error: error.errors })
       } 
 
       if (error instanceof Error) {
-        response.status(500).json({ error: error.message })
+        return response.status(500).json({ error: error.message })
       }
     }
   }

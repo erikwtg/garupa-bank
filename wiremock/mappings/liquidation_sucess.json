@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/mock",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.amount"
+      },
+      {
+        "matchesJsonPath": "$.transactionType"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "response_sucess.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "delayDistribution": {
+      "type": "lognormal",
+      "median": 2000,
+      "sigma": 0.5
+    }
+  }
+}

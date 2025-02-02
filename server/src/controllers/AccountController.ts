@@ -15,14 +15,14 @@ export class AccountController {
         throw new Error("Conta não encontrada")
       }
 
-      response.status(200).json(accountById)
+      return response.status(200).json(accountById)
     } catch(error) {
       if (error instanceof ZodError) {
-        response.status(400).json({ error: error.errors })
+        return response.status(400).json({ error: error.errors })
       } 
 
       if (error instanceof Error) {
-        response.status(500).json({ error: error.message })
+        return response.status(500).json({ error: error.message })
       }
     }
   }

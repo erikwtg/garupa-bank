@@ -31,7 +31,18 @@ services:
       - postgres-data:/var/lib/postgresql/data/
     ports:
       - 5432:5432
-  
+
+  wiremock:
+    <<: *shared-environment
+    image: "wiremock/wiremock:latest"
+    container_name: wiremock
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
+    ports:
+      - "8080:8080" # Mapeando a porta 8080 do container para a máquina host
+    volumes:
+      - ./wiremock/mappings:/home/wiremock/mappings # Pasta para armazenar os mocks
+      - ./wiremock/__files:/home/wiremock/__files # Pasta para armazenar arquivos de resposta
+
   # webapp:
   #   <<: *shared-environment
   #   image: garupa-webapp

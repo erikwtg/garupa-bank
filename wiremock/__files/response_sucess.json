@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "message": "Ordem de transferencia gerada com sucesso!",
+  "data": {
+    "transactionId": "{{randomValue length=10 type='NUMERIC'}}",
+    "order_id": "{{request.body.orderId}}",
+    "amount": "{{request.body.amount}}"
+  }
+}
