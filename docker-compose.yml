@@ -8,21 +8,26 @@ x-shared-environment: &shared-environment
 services:
   server:
     <<: *shared-environment
-    image: garupa-server
+    image: node:22.12.0
+    container_name: server
     environment:
       DB_URL: postgres
-    build:
-      context: ./server
-      dockerfile: docker/Dockerfile
-    command: npm run start
+    working_dir: /app
     volumes:
-      - ./server:/app/
+      - ./server:/app
+    command: npm run start
     ports:
       - 3000:3000
-  
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
   postgres:
     <<: *shared-environment
     image: postgres
+    container_name: postgres
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
@@ -31,6 +36,11 @@ services:
       - postgres-data:/var/lib/postgresql/data/
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   wiremock:
     <<: *shared-environment
@@ -38,10 +48,45 @@ services:
     container_name: wiremock
     entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
     ports:
-      - "8080:8080" # Mapeando a porta 8080 do container para a máquina host
+      - "8080:8080"
     volumes:
-      - ./wiremock/mappings:/home/wiremock/mappings # Pasta para armazenar os mocks
-      - ./wiremock/__files:/home/wiremock/__files # Pasta para armazenar arquivos de resposta
+      - ./wiremock/mappings:/home/wiremock/mappings
+      - ./wiremock/__files:/home/wiremock/__files
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/__admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    <<: *shared-environment
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: garupa
+      RABBITMQ_DEFAULT_PASS: garupa
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  consumer-work:
+    <<: *shared-environment
+    image: node:22.12.0
+    working_dir: /app
+    volumes:
+      - ./consumer-work:/app
+    container_name: consumer-work
+    command: ["node", "--watch", "--experimental-strip-types", "index.ts"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      wiremock:
+        condition: service_healthy
 
   # webapp:
   #   <<: *shared-environment

@@ -8,6 +8,13 @@
       "when": 1738449257640,
       "tag": "0000_create_initial_table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738503252019,
+      "tag": "0001_adjust_transaction_field_external_id",
+      "breakpoints": true
     }
   ]
 }

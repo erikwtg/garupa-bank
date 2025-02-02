@@ -23,7 +23,7 @@ export const accounts = pgTable("accounts", {
 export const transactions = pgTable("transactions", {
   id: serial("id").primaryKey(),
   orderId: uuid("order_id").defaultRandom().notNull(),
-  externalId: text("external_id").unique(),
+  externalId: text("external_id"),
   accountId: integer("account_id").notNull().references(() => accounts.id),
   amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
   expectedOn: timestamp('expected_on'),
