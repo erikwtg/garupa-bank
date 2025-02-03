@@ -88,17 +88,16 @@ services:
       wiremock:
         condition: service_healthy
 
-  # webapp:
-  #   <<: *shared-environment
-  #   image: garupa-webapp
-  #   build:
-  #     context: ./webapp
-  #     dockerfile: docker/Dockerfile
-  #   # command: npm run dev
-  #   volumes:
-  #     - ./webapp:/app/
-  #   ports:
-  #     - 80:80
+  webapp:
+    <<: *shared-environment
+    image: node:22.12.0
+    working_dir: /app
+    container_name: garupa-webapp
+    command: npm run dev
+    volumes:
+      - ./webapp:/app/
+    ports:
+      - 5173:5173
 
 volumes:
   postgres-data:

@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  <h1>Garupa Bank</h1>
+  <router-view></router-view>
 </template>
