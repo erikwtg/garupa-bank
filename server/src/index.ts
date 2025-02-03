@@ -21,4 +21,5 @@ app.use(routes)
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
   console.log("Documentação disponível em http://localhost:3000/api-docs");
+  console.log("Swagger JSON em http://localhost:3000/swagger.json");
 })
