@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from '@/views/Home.vue'
+import Dashboard from '@/views/Dashboard.vue'
 import Login from '@/views/Login.vue'
 import ErrorPage from '@/views/ErrorPage.vue'
 import { useAuthStore } from '@/stores/auth'
@@ -8,8 +8,8 @@ import { useAuthStore } from '@/stores/auth'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Dashboard',
+    component: Dashboard,
     meta: {
       requiresAuth: true
     }
@@ -19,7 +19,7 @@ const routes = [
     name: 'Login',
     component: Login
   },
-  { 
+  {
     path: '/:pathMatch(.*)*',
     component: ErrorPage,
     props: {
