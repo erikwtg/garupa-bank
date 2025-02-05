@@ -16,9 +16,15 @@ export const useTransactionStore = defineStore("transactions", {
   actions: {
     async createTransaction(transactionData) {
       try {
-        const transactionParsedData = createTransactionSchema.parse(transactionData)
+        const transactionParsedData = createTransactionSchema.safeParse(transactionData)
 
-        // Todo[Erik] - Validar se existem erros nos campos e retornar os erros no estado de errors para o componente exibirem
+        if (transactionParsedData.error) {
+          this.errors = {
+            fields: transactionParsedData.error.format(),
+            general: null
+          }
+          return { errors: this.errors }
+        }
 
         const accountStore = useAccountStore()
         Object.assign(transactionParsedData, {

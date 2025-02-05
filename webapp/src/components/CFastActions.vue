@@ -6,24 +6,39 @@ import { useTransactionStore } from '@/stores/transactions'
 const transactionStore = useTransactionStore()
 
 const showTransferModal = ref(false)
-
+const transactionSuccess = ref(false)
+const transactionError = ref(false)
+const loading = ref(false)
 const formData = ref({})
 
 const handleTransfer = async () => {
+  loading.value = true
+
   const response = await transactionStore.createTransaction(formData.value)
 
-  if (response.errors) {
-    console.log('Erros ao criar transação:', response.errors)
-  } else {
+  if (!response.errors) {
+    transactionError.value = false
+    transactionSuccess.value = true
     transactionStore.fetchTransactions()
-    console.log('Transação criada com sucesso:', response.data)
+  } else {
+    transactionError.value = true
   }
-
-  // Todo[Erik] - Validar se a transação foi criada com sucesso
-  showTransferModal.value = false
+  
+  setTimeout(() => {
+    loading.value = false
+    if (!errors.value && transactionSuccess.value) showTransferModal.value = false
+  }, 3000)
 }
 
 const { errors } = storeToRefs(transactionStore)
+
+const checkErrors = (field) => {
+  const fieldErrors = errors.value.fields[field]
+  if (fieldErrors && fieldErrors._errors && fieldErrors._errors.length > 0) {
+    return fieldErrors._errors[0]
+  }
+  return null
+}
 </script>
 
 <template>
@@ -78,9 +93,12 @@ const { errors } = storeToRefs(transactionStore)
               v-model.number="formData.amount"
               type="number"
               required
-              class="peer block w-full pl-10 pr-12 rounded-md border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+              :class="`peer block w-full pl-10 pr-12 rounded-md border-gray-300 ${checkErrors('amount') ? 'focus:border-red-500 focus:ring-red-500' : 'focus:border-emerald-500 focus:ring-emerald-500'}`"
               placeholder="0,00"
             />
+            <p v-if="checkErrors('amount')" class="mt-2 text-sm text-red-600">
+              {{ checkErrors('amount') }}
+            </p>
           </div>
         </div>
 
@@ -98,12 +116,12 @@ const { errors } = storeToRefs(transactionStore)
         </div>
 
         <div>
-          <label for="accountHolder" class="block text-sm font-medium text-gray-700">
+          <label for="beneficiaryAccountHolder" class="block text-sm font-medium text-gray-700">
             Beneficiado
           </label>
           <div class="mt-1 relative rounded-md shadow-sm">
             <input
-              id="accountHolder"
+              id="beneficiaryAccountHolder"
               v-model.nu="formData.beneficiaryAccountHolder"
               type="text"
               class="peerblock w-full pl-3 pr-12 rounded-md border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
@@ -121,10 +139,13 @@ const { errors } = storeToRefs(transactionStore)
               id="beneficiaryAccountNumber"
               v-model.number="formData.beneficiaryAccountNumber"
               type="number"
-              class="peer block w-full pl-3 pr-12 rounded-md border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+              :class="`peer block w-full pl-3 pr-12 rounded-md border-gray-300 ${checkErrors('beneficiaryAccountNumber') ? 'focus:border-red-500 focus:ring-red-500' : 'focus:border-emerald-500 focus:ring-emerald-500'}`"
               placeholder="Número da Conta"
             />
           </div>
+          <p v-if="checkErrors('beneficiaryAccountNumber')" class="mt-2 text-sm text-red-600">
+            {{ checkErrors('beneficiaryAccountNumber') }}
+          </p>
         </div>
 
         <div>
@@ -136,10 +157,13 @@ const { errors } = storeToRefs(transactionStore)
               id="beneficiaryAgencyNumber"
               v-model.number="formData.beneficiaryAgencyNumber"
               type="number"
-              class="peer block w-full pl-3 pr-12 rounded-md border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+              :class="`peer block w-full pl-3 pr-12 rounded-md border-gray-300 ${checkErrors('beneficiaryAgencyNumber') ? 'focus:border-red-500 focus:ring-red-500' : 'focus:border-emerald-500 focus:ring-emerald-500'}`"
               placeholder="Número da Conta"
             />
           </div>
+          <p v-if="checkErrors('beneficiaryAccountNumber')" class="mt-2 text-sm text-red-600">
+            {{ checkErrors('beneficiaryAgencyNumber') }}
+          </p>
         </div>
 
         <div>
@@ -151,10 +175,13 @@ const { errors } = storeToRefs(transactionStore)
               id="beneficiaryBankCode"
               v-model.number="formData.beneficiaryBankCode"
               type="number"
-              class="peer block w-full pl-3 pr-12 rounded-md border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+              :class="`peer block w-full pl-3 pr-12 rounded-md border-gray-300 ${checkErrors('beneficiaryBankCode') ? 'focus:border-red-500 focus:ring-red-500' : 'focus:border-emerald-500 focus:ring-emerald-500'}`"
               placeholder="Número da Conta"
             />
           </div>
+          <p v-if="checkErrors('beneficiaryBankCode')" class="mt-2 text-sm text-red-600">
+            {{ checkErrors('beneficiaryBankCode') }}
+          </p>
         </div>
 
         <div>
@@ -224,16 +251,17 @@ const { errors } = storeToRefs(transactionStore)
           </button>
           <button
             @click="handleTransfer"
-            class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 cursor-pointer"
+            :class="`px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md ${transactionError ? 'hover:bg-red-600' : 'hover:bg-emerald-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 ${transactionError ? 'focus:ring-red-500' : 'focus:ring-emerald-500'} cursor-pointer ${loading ? 'opacity-50 cursor-not-allowed' : ''}`"
           >
-            Confirmar Transferência
+            {{ loading ? 'Aguarde...' : '' }}
+            {{ transactionError && !loading ? 'Tente novamente' : '' }}
+            {{ !transactionError && !loading ? 'Confirmar Transferência' : '' }}
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <style>
 .peer::-webkit-inner-spin-button,
