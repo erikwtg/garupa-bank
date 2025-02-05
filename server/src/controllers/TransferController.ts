@@ -7,18 +7,18 @@ import { OrderIntegrationService } from "../services/order/OrderIntegrationServi
 import { OrderIntegrationServiceDTO } from "../services/order/OrderIntegrationServiceDTO.ts"
 
 import { createTransferSchema } from "../schemas/transfer/createTransferSchema.ts"
-import { getTransferSchema } from "../schemas/transfer/getTransferSchema.ts"
+import { getTransferSchema, getTransferByAccountIdSchema } from "../schemas/transfer/getTransferSchema.ts"
 
 import { TRANSACTION_STATUS } from "../constants/transactionStatus.ts"
 
 export class TransferController {
   static async create(request: express.Request, response: express.Response) {
-    try{
+    try {
       const validatedData = createTransferSchema.parse(request.body)
+
       let newTransfer = new TransferEntity(validatedData)
 
       const dateNow = new Date()
-
       const dueDate = newTransfer?.dueDate ? new Date(newTransfer.dueDate) : null
       if (dueDate && dueDate < dateNow) {
         return response.status(400).json({ error: "Não pode ser efetuado após a data de vencimento." })
@@ -36,6 +36,7 @@ export class TransferController {
         return response.status(500).json({ error: "Erro ao criar a transferência." })
       }
 
+      // Envia a ordem para o fila
       if (!scheduled) {
         let newOrder = new OrderIntegrationServiceDTO(newTransfer)
         const orderIntegrationService = new OrderIntegrationService
@@ -55,7 +56,6 @@ export class TransferController {
       }
 
       if (error instanceof Error) {
-        console.log(error)
         return response.status(500).json({ error: error.message })
       }
     }
@@ -96,6 +96,25 @@ export class TransferController {
       if (error instanceof ZodError) {
         return response.status(400).json({ error: error.errors })
       } 
+
+      if (error instanceof Error) {
+        return response.status(500).json({ error: error.message })
+      }
+    }
+  }
+
+  static async getByAccountId(request: express.Request, response: express.Response) {
+    try{
+      const validatedData = getTransferByAccountIdSchema.parse(request.params)
+
+      const transferService = TransferFactory.getInstance()
+      const transferByAccountId = await transferService.findTransferByAccountId(validatedData.accountId)
+
+      return response.status(200).json(transferByAccountId)
+    } catch(error) {
+      if (error instanceof ZodError) {
+        return response.status(400).json({ error: error.errors })
+      }
 
       if (error instanceof Error) {
         return response.status(500).json({ error: error.message })

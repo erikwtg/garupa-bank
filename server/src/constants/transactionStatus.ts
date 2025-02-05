@@ -1,7 +1,13 @@
 export const TRANSACTION_STATUS = {
-  SCHEDULED: "scheduled",
-  PENDING: "pending",
-  PROCESSING: "processing",
-  CONFIRMED: "confirmed",
-  CANCELED: "canceled"
+  SCHEDULED: "AGENDADO",
+  PENDING: "PENDENTE",
+  PROCESSING: "PROCESSANDO",
+  CONFIRMED: "APROVADO",
+  CANCELED: "CANCELADO"
+} as const
+
+export const TRANSACTION_TYPE = {
+  TRANSFER: "TRANSFERÊNCIA",
+  PAYMENT: "PAGAMENTO",
+  DEPOSIT: "DEPÓSITO",
 } as const

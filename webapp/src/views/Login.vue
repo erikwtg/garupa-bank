@@ -1,31 +1,53 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-const name = ref('Erik William')
-const email = ref('erik@huboost.com.br')
-const password = ref('123456')
-const signIn = ref(false)
-
 const router = useRouter()
 const authStore = useAuthStore()
+const { errors } = storeToRefs(authStore)
+
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const signIn = ref(false)
+
+const hasErrors = (field) => {
+  // return errors.value.some(error => error.path[0].includes(field))
+}
 
 const login = async () => {
   if (signIn.value) {
-    await authStore.register({
+    const response = await authStore.register({
       name: name.value,
       email: email.value,
       password: password.value
     })
+
+    if (!response.error) {
+      router.push('/')
+    } else {
+      errors.value = response.error
+    }
   } else {
-    await authStore.login({
+
+    const response = await authStore.login({
       email: email.value,
       password: password.value
     })
+  
+    if (!response.error) {
+      router.push('/')
+    } else {
+      errors.value = response.error
+    }
   }
-  router.push('/')
 }
+
+onMounted(() => {
+  errors.value = null
+})
 </script>
 
 <template>
@@ -41,32 +63,39 @@ const login = async () => {
         type="text"
         placeholder="Nome"
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
+        :class="{ 'border-red-500': hasErrors('name') }"
       />
       <input
         v-model="email"
         type="email"
         placeholder="Email"
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
+        :class="{ 'border-red-500': hasErrors('email') }"
       />
       <input
         v-model="password"
         type="password"
         placeholder="Senha"
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
+        :class="{ 'border-red-500': hasErrors('password') }"
       />
 
-      <button @click="login" class="min-w-60 px-4 py-2 bg-[#3DA88F] text-white rounded-lg hover:bg-[#44B399] focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm font-semibold cursor-pointer">
+      <button @click="login" class="min-w-52 px-4 py-2 bg-[#3DA88F] text-white rounded-lg hover:bg-[#44B399] focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm font-semibold cursor-pointer">
         {{ signIn ? 'Cadastrar' : 'Login' }}
       </button>
 
       <div v-if="!signIn" class="flex flex-col items-center justify-center gap-2">
         <span class="text-sm text-gray-500">Ainda não tem sua conta?</span>
-        <button @click="signIn = true" class="text-sm text-[#308b76] font-semibold cursor-pointer">Cadastre</button>
+        <button @click.prevent="signIn = true" class="text-sm text-[#308b76] font-semibold cursor-pointer">Cadastre</button>
       </div>
 
       <div v-if="signIn" class="flex flex-col items-center justify-center gap-2">
         <span class="text-sm text-gray-500">Já tem sua conta?</span>
-        <button @click="signIn = false" class="text-sm text-[#308b76] font-semibold cursor-pointer">Login</button>
+        <button @click.prevent="signIn = false" class="text-sm text-[#308b76] font-semibold cursor-pointer">Login</button>
+      </div>
+
+      <div v-if="errors" class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm">
+        <span class="text-sm text-red-500">{{ errors }}</span>
       </div>
     </div>
   </div>

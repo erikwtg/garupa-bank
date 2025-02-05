@@ -1,7 +1,6 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-
 import routes from "./routes/index.ts"
 
 import { setupSwagger } from "./config/swagger.ts";

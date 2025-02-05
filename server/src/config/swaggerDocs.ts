@@ -43,11 +43,28 @@ export const transferDocs = {
                 type: "object",
                 properties: {
                   data: {
-                    type: "object",  // Corrigido de "objet" para "object"
+                    type: "object",
                     properties: {
-                      userId: {
+                      token: {
                         type: "string",
-                        example: "abc123"
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZ2FydXBhQGdtYWlsLmNvbSIsImlhdCI6MTczODQ1MDQ3MywiZXhwIjoxNzM4NDU0MDczfQ.bJ61hER5CjmiPD4AD7jMUILSoQl-CpV18DUD1VODTlI"
+                      },
+                      user: {
+                        type: "object",
+                        properties: {
+                          id: {
+                            type: "number",
+                            example: 1
+                          },
+                          name: {
+                            type: "string",
+                            example: "garupa"
+                          },
+                          email: {
+                            type: "string",
+                            example: "contato@garupa.com.br"
+                          }
+                        }
                       }
                     }
                   },
@@ -110,6 +127,23 @@ export const transferDocs = {
                       token: {
                         type: "string",
                         example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZ2FydXBhQGdtYWlsLmNvbSIsImlhdCI6MTczODQ1MDQ3MywiZXhwIjoxNzM4NDU0MDczfQ.bJ61hER5CjmiPD4AD7jMUILSoQl-CpV18DUD1VODTlI"
+                      },
+                      user: {
+                        type: "object",
+                        properties: {
+                          id: {
+                            type: "number",
+                            example: 1
+                          },
+                          name: {
+                            type: "string",
+                            example: "garupa"
+                          },
+                          email: {
+                            type: "string",
+                            example: "contato@garupa.com.br"
+                          }
+                        }
                       }
                     }
                   },

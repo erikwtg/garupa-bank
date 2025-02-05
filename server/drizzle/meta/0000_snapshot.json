@@ -1,5 +1,5 @@
 {
-  "id": "46a136c2-9f61-4131-b4bd-fc13b80e9649",
+  "id": "107e20a1-11d4-4215-8914-baf8e00c2153",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -171,7 +171,7 @@
         },
         "beneficiary_account_holder": {
           "name": "beneficiary_account_holder",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -231,15 +231,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "transactions_external_id_unique": {
-          "name": "transactions_external_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "external_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

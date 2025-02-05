@@ -26,4 +26,27 @@ export class AccountController {
       }
     }
   }
+
+  static async getByUserId(request: express.Request, response: express.Response) {
+    try{
+      const validatedData = getAccountSchema.parse(request.params)
+
+      const accountService = AccountFactory.getInstance()
+      const accountsByUserId = await accountService.findAccountsByUserId(validatedData.id)
+
+      if (!accountsByUserId) {
+        throw new Error("Conta não encontrada")
+      }
+
+      return response.status(200).json(accountsByUserId)
+    } catch(error) {
+      if (error instanceof ZodError) {
+        return response.status(400).json({ error: error.errors })
+      } 
+
+      if (error instanceof Error) {
+        return response.status(500).json({ error: error.message })
+      }
+    }
+  }
 }

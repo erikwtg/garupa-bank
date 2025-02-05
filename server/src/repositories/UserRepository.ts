@@ -13,7 +13,6 @@ export class UserRepository extends BaseRepository<UserEntity> {
     try {
       return await db.select().from(users).where(eq(users.email, email)).limit(1)
     } catch(error) {
-      console.log(`Usuário com email ${email} não encontrado.: `, error)
       throw new Error(`Usuário com email ${email} não encontrado..`)
     }
   }

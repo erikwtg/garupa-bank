@@ -11,14 +11,14 @@ import jwt from "jsonwebtoken"
 
 // Todo[Erik] - Mover para utils
 function generateRandomNumber(digits: number): string {
-  const min = Math.pow(10, digits - 1)  // O menor número com 'digits' dígitos
-  const max = Math.pow(10, digits) - 1  // O maior número com 'digits' dígitos
+  const min = Math.pow(10, digits - 1)
+  const max = Math.pow(10, digits) - 1
   const randomNum = Math.floor(Math.random() * (max - min + 1)) + min
   return randomNum.toString()
 }
 
 export class AuthService implements IAuthService<AuthServiceDTO> {
-  async register(data: AuthServiceDTO): Promise<{ userId: number | undefined }> {
+  async register(data: AuthServiceDTO): Promise<{ user: object | undefined }> {
     const hashedPassword = await bcrypt.hash(data.password, 10)
     Object.assign(data, { password: hashedPassword})
 
@@ -46,10 +46,14 @@ export class AuthService implements IAuthService<AuthServiceDTO> {
       throw new Error("Erro ao criar conta")
     }
 
-    return { userId: createdUser[0].id }
+    return { user: {
+      id: createdUser[0].id,
+      name: createdUser[0].name,
+      email: createdUser[0].email
+    } }
   }
 
-  async login(email: string, password: string): Promise<{ token: string, userId: number | undefined}> {
+  async login(email: string, password: string): Promise<{ token: string, user: object | undefined}> {
     const userService = UserFactory.getInstance()
     const user = await userService.findByEmail(email)
     
@@ -64,6 +68,10 @@ export class AuthService implements IAuthService<AuthServiceDTO> {
 
     const token = jwt.sign({ userId: user[0].id, email: user[0].email}, "garupa-key", { expiresIn: "1h" })
 
-    return { token, userId: user[0].id }
+    return { token, user: {
+      id: user[0].id,
+      name: user[0].name,
+      email: user[0].email
+    } }
   }
 }

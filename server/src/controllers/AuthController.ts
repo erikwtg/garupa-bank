@@ -1,6 +1,6 @@
 import express from "express"
 import { AuthService } from "../services/auth/AuthService.ts"
-import { authRegisterSchema } from "../schemas/auth/authRegisterSchema.ts"
+import { authRegisterSchema, authLoginSchema } from "../schemas/auth/authSchema.ts"
 import { ZodError } from "zod"
 
 export class AuthController {
@@ -21,7 +21,6 @@ export class AuthController {
       }
 
       if (error instanceof Error) {
-        console.log(error)
         return response.status(500).json({ error: error.message })
       }
     }
@@ -29,9 +28,9 @@ export class AuthController {
 
   static async login(request: express.Request, response: express.Response) {
     try {
-      const { email, password } = request.body
+      const validatedAuthData = authLoginSchema.parse(request.body)
       const authService = new AuthService()
-      const result = await authService.login(email, password)
+      const result = await authService.login(validatedAuthData.email, validatedAuthData.password)
 
       return response.status(200).json({
         message: "Login realizado com sucesso",
@@ -43,7 +42,6 @@ export class AuthController {
       }
 
       if (error instanceof Error) {
-        console.log(error)
         return response.status(500).json({ error: error.message })
       }
     }

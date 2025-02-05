@@ -23,14 +23,13 @@ CREATE TABLE "transactions" (
 	"status" text NOT NULL,
 	"transaction_type" text NOT NULL,
 	"transfer_method" text,
-	"beneficiary_account_holder" integer,
+	"beneficiary_account_holder" text,
 	"beneficiary_account_number" integer,
 	"beneficiary_agency_number" integer,
 	"beneficiary_bank_code" integer,
 	"transaction_description" text,
 	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "transactions_external_id_unique" UNIQUE("external_id")
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "users" (

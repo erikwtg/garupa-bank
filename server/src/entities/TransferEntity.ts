@@ -11,10 +11,10 @@ export class TransferEntity {
   status?: string
   transactionType: string
   transferMethod?: string
-  beneficiaryAccountHolder?: number // Tornar obrigatório após implementar
-  beneficiaryAccountNumber?: number // Tornar obrigatório após implementar
-  beneficiaryAgencyNumber?: number // Tornar obrigatório após implementar
-  beneficiaryBankCode?: number // Tornar obrigatório após implementar
+  beneficiaryAccountHolder?: number
+  beneficiaryAccountNumber?: number
+  beneficiaryAgencyNumber?: number
+  beneficiaryBankCode?: number
   transactionDescription?: string
 
   constructor({
@@ -44,10 +44,10 @@ export class TransferEntity {
     status?: string
     transactionType: string
     transferMethod?: string
-    beneficiaryAccountHolder?: number  // Tornar obrigatório após implementar
-    beneficiaryAccountNumber?: number  // Tornar obrigatório após implementar
-    beneficiaryAgencyNumber?: number  // Tornar obrigatório após implementar
-    beneficiaryBankCode?: number // Tornar obrigatório após implementar
+    beneficiaryAccountHolder?: number
+    beneficiaryAccountNumber?: number
+    beneficiaryAgencyNumber?: number
+    beneficiaryBankCode?: number
     transactionDescription?: string
   }) {
     this.id = id
