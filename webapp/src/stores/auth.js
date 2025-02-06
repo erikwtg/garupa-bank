@@ -1,6 +1,8 @@
-import { defineStore } from "pinia"
+import { defineStore, getActivePinia } from "pinia"
 import router from "@/router"
 import { registerSchema, loginSchema } from "@/schemas/authSchema"
+import { useAccountStore } from "@/stores/account"
+
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -52,6 +54,11 @@ export const useAuthStore = defineStore("auth", {
         const { data: { token, user }, message } = responseData
         this.token = token
         this.user = user
+
+        if (getActivePinia()) {
+          const accountStore = useAccountStore()
+          await accountStore.fetchAccounts()
+        }
 
         return { data: { token, user }, message };
 
@@ -109,6 +116,11 @@ export const useAuthStore = defineStore("auth", {
         const { data: { token, user }, message } = responseData
         this.user = user
         this.token = token
+
+        if (getActivePinia()) {
+          const accountStore = useAccountStore()
+          await accountStore.fetchAccounts()
+        }
 
         return { data: { token, user }, message };
 

@@ -22,7 +22,6 @@ const login = async () => {
     })
 
     if (!response.errors) {
-      console.log("RESPONSE AQUIIIII: ", response)
       signIn.value = false
       router.push('/')
     }
