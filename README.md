@@ -99,15 +99,25 @@ Depois de executar o comando de inicialização, você pode acessar as aplicaç�
 
 Documentação da API: http://localhost:3000/api-docs
 
+## Funcionalidades Implementadas
+
+- Registro de usuário e conta.
+- Login de usuário.
+- Listagem de transações financeiras.
+- Criação de transações financeiras.
+- Visualização de transações financeiras.
+- Toda funcionalidade de transferência de valores entre contas estao atreladas ao botao transferir do componente de dashboard.
+
 ## Melhorias (Coisas que gostaria de ter feito)
 
 Embora o projeto tenha sido desenvolvido com as melhores práticas disponíveis dentro do tempo e dos requisitos do desafio, há algumas melhorias que gostaria de ter implementado:
 
-1. Abstração dos Controllers: A arquitetura do código poderia ser melhorada ao abstrair os controllers de maneira mais eficaz, separando melhor as responsabilidades e tornando o código mais modular e fácil de manter.
+1. Abstração dos Controllers: A arquitetura do código poderia ser melhorada ao abstrair os controllers de maneira mais eficaz, separando melhor as responsabilidades e tornando o código mais modular e fácil de manter. (Principalmente no controller de transações)
 2. Testes Unitários: Gostaria de implementar testes para melhorar a cobertura e a confiança na estabilidade do sistema.
 3. Observabilidade: A inclusão de logs e métricas mais detalhadas ajudaria a entender melhor o comportamento da aplicação.
 4. Tratamento de Erros e Validações no Frontend: Embora o tratamento de erros no backend tenha sido abordado, a validação e o tratamento de erros no frontend podem ser aprimorados. Gostaria de ter implementado uma validação de dados mais robusta e um sistema de feedback mais amigável para o usuário final.
-
+5. Funcionalidades como validar se o usuario tem saldo suficiente para a transferência, deduzir do valor do saldo quando efetuar a transferência, selecionar tipo de operação (pix, ted, doc) e etc.
+5. Documentação da API: A documentação da API poderia ser melhorada para ser mais clara e fácil de entender.
 ## Problemas Encontrados
 
 1. Banco de dados não estava sendo criado corretamente, por isso foi necessário criar o banco de dados manualmente.
