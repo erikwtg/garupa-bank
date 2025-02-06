@@ -8,8 +8,9 @@ const transactionsStore = useTransactionStore()
 const { transactionList } = storeToRefs(transactionsStore)
 
 onMounted(async () => {
-  await transactionsStore.fetchTransactions()
+  transactionsStore.fetchTransactions()
 })
+
 </script>
 
 <template>

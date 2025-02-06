@@ -13,8 +13,12 @@ const email = ref('')
 const password = ref('')
 const signIn = ref(false)
 
-const hasErrors = (field) => {
-  // return errors.value.some(error => error.path[0].includes(field))
+const checkErrors = (field) => {
+  const fieldErrors = errors.value.fields[field]
+  if (fieldErrors && fieldErrors._errors && fieldErrors._errors.length > 0) {
+    return fieldErrors._errors[0]
+  }
+  return null
 }
 
 const login = async () => {
@@ -25,10 +29,9 @@ const login = async () => {
       password: password.value
     })
 
-    if (!response.error) {
+    if (!response.errors) {
+      signIn.value = false
       router.push('/')
-    } else {
-      errors.value = response.error
     }
   } else {
 
@@ -37,17 +40,11 @@ const login = async () => {
       password: password.value
     })
   
-    if (!response.error) {
+    if (!response.errors) {
       router.push('/')
-    } else {
-      errors.value = response.error
     }
   }
 }
-
-onMounted(() => {
-  errors.value = null
-})
 </script>
 
 <template>
@@ -63,21 +60,21 @@ onMounted(() => {
         type="text"
         placeholder="Nome"
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
-        :class="{ 'border-red-500': hasErrors('name') }"
+        :class="{ 'border-red-500': checkErrors('name') }"
       />
       <input
         v-model="email"
         type="email"
         placeholder="Email"
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
-        :class="{ 'border-red-500': hasErrors('email') }"
+        :class="{ 'border-red-500': checkErrors('email') }"
       />
       <input
         v-model="password"
         type="password"
         placeholder="Senha"
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
-        :class="{ 'border-red-500': hasErrors('password') }"
+        :class="{ 'border-red-500': checkErrors('password') }"
       />
 
       <button @click="login" class="min-w-52 px-4 py-2 bg-[#3DA88F] text-white rounded-lg hover:bg-[#44B399] focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm font-semibold cursor-pointer">
@@ -94,8 +91,8 @@ onMounted(() => {
         <button @click.prevent="signIn = false" class="text-sm text-[#308b76] font-semibold cursor-pointer">Login</button>
       </div>
 
-      <div v-if="errors" class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm">
-        <span class="text-sm text-red-500">{{ errors }}</span>
+      <div v-if="errors.general" class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm">
+        <span class="text-sm text-red-500">{{ errors.general }}</span>
       </div>
     </div>
   </div>

@@ -1,12 +1,17 @@
 import { defineStore } from "pinia"
 import router from "@/router"
-import { z } from "zod"
+import { registerSchema, loginSchema } from "@/schemas/authSchema"
+
+import { useTransactionStore } from "./transactions"
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
     token: null,
-    errors: []
+    errors: {
+      fields: {},
+      general: null
+    },
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -16,16 +21,14 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async login(userData) {
       try {
-        const loginSchema = z.object({
-          email: z.string().email('Email inválido'),
-          password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres')
-        })
+        const validatedData = loginSchema.safeParse(userData)
 
-        // Todo[Erik] - Validar os dados do login
-        const validatedData = loginSchema.parse(userData)
-
-        if (validatedData.errors) {
-          throw new Error(validatedData.errors)
+        if (validatedData.error) {
+          this.errors = {
+            fields: validatedData.error.format(),
+            general: null
+          }
+          return { errors: this.errors }
         }
 
         const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
@@ -41,35 +44,47 @@ export const useAuthStore = defineStore("auth", {
         const responseData = await response.json()
 
         if (!response.ok) {
-          const { error } = responseData
-          throw new Error( error || 'Erro no login' );
+          this.errors = {
+            fields: responseData.errors?.fields || {},
+            general: responseData.errors?.message || 'Erro ao fazer login! Credenciais inválidas.'
+          }
+          return { errors: this.errors }
         }
 
         const { data: { token, user }, message } = responseData
         this.token = token;
         this.user = user;
+        useTransactionStore().fetchTransactions()
         return { data: { token, user }, message };
 
       } catch (error) {
-        throw new Error(error);
+        this.errors = {
+          fields: {},
+          general: 'Erro de conexão. Tente novamente.'
+        }
+        return { errors: error }
       }
     },
     logout() {
       this.user = null
       this.token = null
       localStorage.removeItem('token')
+      this.errors = {
+        fields: {},
+        general: null
+      }
       router.push('/login')
     },
     async register(userData) {
+      const validatedData = registerSchema.safeParse(userData)
 
-      const registerSchema = z.object({
-        name: z.string().min(3, 'O nome deve ter pelo menos 3 caracteres'),
-        email: z.string().email('Email inválido'),
-        password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres')
-      })
-
-      // Todo[Erik] - Validar os dados para o registro
-      const validatedData = registerSchema.parse(userData)
+      if (validatedData.error) {
+        this.errors = {
+          fields: validatedData.error.format(),
+          general: null
+        }
+        return { errors: this.errors }
+      }
 
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
@@ -79,14 +94,17 @@ export const useAuthStore = defineStore("auth", {
             "Accept": "application/json"
           },
           credentials: "include",
-          body: JSON.stringify(validatedData)
+          body: JSON.stringify(validatedData.data)
         })
 
         const responseData = await response.json()
 
         if (!response.ok) {
-          const { error } = responseData
-          throw new Error( error.message || 'Erro no registro' );
+          this.errors = {
+            fields: responseData.errors?.fields || {},
+            general: responseData.errors?.message || 'Erro no registro'
+          }
+          return { errors: this.errors }
         }
 
         const { data: { token, user }, message } = responseData
@@ -96,8 +114,11 @@ export const useAuthStore = defineStore("auth", {
         return { data: { token, user }, message };
 
       } catch (error) {
-        console.error('Erro ao registrar usuário:', error);
-        throw new Error(error);
+        this.errors = {
+          fields: {},
+          general: 'Erro ao registrar usuário. Tente novamente.'
+        }
+        return { errors: this.errors }
       }
     }
   },

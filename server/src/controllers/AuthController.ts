@@ -6,7 +6,6 @@ import { ZodError } from "zod"
 export class AuthController {
   static async register(request: express.Request, response: express.Response) {
     try {
-
       const validatedAuthData = authRegisterSchema.parse(request.body)
       const authService = new AuthService()
       const result = await authService.register(validatedAuthData)

@@ -1,18 +1,10 @@
 <script setup>
-import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import CNavbar from '@/components/CNavbar.vue'
 import CBalance from '@/components/CBalance.vue'
 import CFastActions from '@/components/CFastActions.vue'
 import CAccountDetails from '@/components/CAccountDetails.vue'
 import CHistoryTransactions from '@/components/CHistoryTransactions.vue'
-const authStore = useAuthStore()
-
-const logout = () => {
-  authStore.logout()
-}
-
-const showTransferModal = ref(false)
 </script>
 
 <template>
