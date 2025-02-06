@@ -108,6 +108,15 @@ Embora o projeto tenha sido desenvolvido com as melhores práticas disponíveis 
 3. Observabilidade: A inclusão de logs e métricas mais detalhadas ajudaria a entender melhor o comportamento da aplicação.
 4. Tratamento de Erros e Validações no Frontend: Embora o tratamento de erros no backend tenha sido abordado, a validação e o tratamento de erros no frontend podem ser aprimorados. Gostaria de ter implementado uma validação de dados mais robusta e um sistema de feedback mais amigável para o usuário final.
 
+## Problemas Encontrados
+
+1. Banco de dados não estava sendo criado corretamente, por isso foi necessário criar o banco de dados manualmente.
+Acesse o container da API server e execute o seguinte comando:
+
+```bash
+npx drizzle-kit migrate
+```
+
 ## Tecnologias e Estruturas Utilizadas
 
 A escolha das tecnologias e das estruturas foi feita com base no desafio proposto.
