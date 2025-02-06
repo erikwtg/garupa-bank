@@ -60,11 +60,12 @@ Para rodar os serviços em modo desenvolvimento, execute o seguinte comando:
 ```bash
 ./deployment.sh
 ```
+
 ou
 
 ```bash
 docker network create garupa-bank-network
-```bash
+
 docker-compose -f docker-compose.yml up -d --build
 ```
 
