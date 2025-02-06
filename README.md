@@ -117,6 +117,14 @@ Acesse o container da API server e execute o seguinte comando:
 npx drizzle-kit migrate
 ```
 
+Caso ainda persistisse o problema, apague todo conteúdo da pasta server/drizzle, acesse o container da API server e execute o seguintes comandos:
+
+```bash
+npx drizzle-kit generate
+
+npx drizzle-kit migrate
+```
+
 ## Tecnologias e Estruturas Utilizadas
 
 A escolha das tecnologias e das estruturas foi feita com base no desafio proposto.
