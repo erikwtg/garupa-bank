@@ -1,7 +1,7 @@
 export const transferDocs = {
   "/auth/register": {
     post: {
-      summary: "Cria uma nova conta",
+      summary: "Registra um novo usuário e conta",
       description: "Endpoint para criar uma nova conta",
       tags: ["Auth"],
       requestBody: {
@@ -85,8 +85,8 @@ export const transferDocs = {
 
   "/auth/login": {
     post: {
-      summary: "Cria uma nova conta",
-      description: "Endpoint para criar uma nova conta",
+      summary: "Faz o login do usuário",
+      description: "Endpoint para fazer login no sistema",
       tags: ["Auth"],
       requestBody: {
         required: true,
@@ -181,7 +181,7 @@ export const transferDocs = {
       ],
       responses: {
         200: {
-          description: "Login realizado com sucesso",
+          description: "Retorna as informações da conta específica",
           content: {
             "application/json": {
               schema: {
@@ -340,99 +340,6 @@ export const transferDocs = {
         500: { description: "Erro interno do servidor" },
       },
     },
-
-    get: {
-      summary: "Listar transações financeiras",
-      description: "Endpoint para listar as transação financeira.",
-      tags: ["Transactions"],
-      responses: {
-        200: {
-          description: "Transação criada com sucesso",
-          content: {
-            "application/json": {
-              schema: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    id: {
-                      type: "string",
-                      example: 1
-                    },
-                    orderId: {
-                      type: "string",
-                      example: "23903d5f-3812-413b-9bf0-b96775ca80eb"
-                    },
-                    externalId: {
-                      type: "string",
-                      example: "IDEXTERNO12345"
-                    },
-                    amount: {
-                      type: "number",
-                      example: 100.50
-                    },
-                    expectedOn: {
-                      type: "datetime",
-                      example: "2025-02-01T22:55:57.102Z"
-                    },
-                    dueDate: {
-                      type: "datetime",
-                      example: "2025-02-01T22:55:57.102Z"
-                    },
-                    status: {
-                      type: "string",
-                      example: "processing"
-                    },
-                    accountId: {
-                      type: "number",
-                      example: 3
-                    },
-                    transactionType: {
-                      type: "string",
-                      enum: ["transfer"], example: "transfer"
-                    },
-                    transferMethod: {
-                      type: "string",
-                      enum: ["TED", "PIX"]
-                    },
-                    beneficiaryAccountHolder: {
-                      type: "string",
-                      example: "Beneficiado"
-                    },
-                    beneficiaryAccountNumber: {
-                      type: "number",
-                      example: 3
-                    },
-                    beneficiaryAgencyNumber: {
-                      type: "number",
-                      example: 3345678934565432
-                    },
-                    beneficiaryBankCode: {
-                      type: "number",
-                      example: 236
-                    },
-                    transactionDescription: {
-                      type: "string",
-                      example: "Descrição da transferência"
-                    },
-                    createdAt: {
-                      type: "datetime",
-                      example: "2025-02-01T22:51:03.230Z"
-                    },
-                    updatedAt: {
-                      type: "dateetime",
-                      example: "2025-02-01T22:51:03.230Z"
-                    },
-                  },
-                }
-              },
-            },
-          },
-        },
-        400: { description: "Erro na requisição (exemplo, campos inválidos)" },
-        500: { description: "Erro interno do servidor" },
-      },
-    },
   },
 
   "/transfers/:id": {
@@ -537,4 +444,99 @@ export const transferDocs = {
       },
     },
   },
-};
+
+  "/transfers/account/:id": {
+    get: {
+      summary: "Listar transações financeiras do usuário",
+      description: "Endpoint para listar as transações financeiras do usuário.",
+      tags: ["Transactions"],
+      responses: {
+        200: {
+          description: "Transação criada com sucesso",
+          content: {
+            "application/json": {
+              schema: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: {
+                      type: "string",
+                      example: 1
+                    },
+                    orderId: {
+                      type: "string",
+                      example: "23903d5f-3812-413b-9bf0-b96775ca80eb"
+                    },
+                    externalId: {
+                      type: "string",
+                      example: "IDEXTERNO12345"
+                    },
+                    amount: {
+                      type: "number",
+                      example: 100.50
+                    },
+                    expectedOn: {
+                      type: "datetime",
+                      example: "2025-02-01T22:55:57.102Z"
+                    },
+                    dueDate: {
+                      type: "datetime",
+                      example: "2025-02-01T22:55:57.102Z"
+                    },
+                    status: {
+                      type: "string",
+                      example: "processing"
+                    },
+                    accountId: {
+                      type: "number",
+                      example: 3
+                    },
+                    transactionType: {
+                      type: "string",
+                      enum: ["transfer"], example: "transfer"
+                    },
+                    transferMethod: {
+                      type: "string",
+                      enum: ["TED", "PIX"]
+                    },
+                    beneficiaryAccountHolder: {
+                      type: "string",
+                      example: "Beneficiado"
+                    },
+                    beneficiaryAccountNumber: {
+                      type: "number",
+                      example: 3
+                    },
+                    beneficiaryAgencyNumber: {
+                      type: "number",
+                      example: 3345678934565432
+                    },
+                    beneficiaryBankCode: {
+                      type: "number",
+                      example: 236
+                    },
+                    transactionDescription: {
+                      type: "string",
+                      example: "Descrição da transferência"
+                    },
+                    createdAt: {
+                      type: "datetime",
+                      example: "2025-02-01T22:51:03.230Z"
+                    },
+                    updatedAt: {
+                      type: "dateetime",
+                      example: "2025-02-01T22:51:03.230Z"
+                    },
+                  },
+                }
+              },
+            },
+          },
+        },
+        400: { description: "Erro na requisição (exemplo, campos inválidos)" },
+        500: { description: "Erro interno do servidor" },
+      },
+    },
+  }
+}
