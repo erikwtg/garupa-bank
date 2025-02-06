@@ -1,6 +1,9 @@
 <script setup>
+import { storeToRefs } from 'pinia'
 import { useAccountStore } from '@/stores/account'
+
 const accountStore = useAccountStore()
+const { account } = storeToRefs(accountStore)
 </script>
 
 <template>
@@ -11,15 +14,15 @@ const accountStore = useAccountStore()
     <div class="space-y-2">
       <div class="flex justify-between items-center">
         <span class="text-gray-600">Agência:</span>
-        <span class="font-medium text-gray-800">{{ accountStore.account[0].agencyNumber }}</span>
+        <span class="font-medium text-gray-800">{{ account[0].agencyNumber }}</span>
       </div>
       <div class="flex justify-between items-center">
         <span class="text-gray-600">Conta:</span>
-        <span class="font-medium text-gray-800">{{ accountStore.account[0].accountNumber }}</span>
+        <span class="font-medium text-gray-800">{{ account[0].accountNumber }}</span>
       </div>
       <div class="flex justify-between items-center">
         <span class="text-gray-600">Banco:</span>
-        <span class="font-medium text-gray-800">{{ accountStore.account[0].bankCode }}</span>
+        <span class="font-medium text-gray-800">{{ account[0].bankCode }}</span>
       </div>
     </div>
   </div>

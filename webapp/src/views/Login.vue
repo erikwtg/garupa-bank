@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -13,14 +13,6 @@ const email = ref('')
 const password = ref('')
 const signIn = ref(false)
 
-const checkErrors = (field) => {
-  const fieldErrors = errors.value.fields[field]
-  if (fieldErrors && fieldErrors._errors && fieldErrors._errors.length > 0) {
-    return fieldErrors._errors[0]
-  }
-  return null
-}
-
 const login = async () => {
   if (signIn.value) {
     const response = await authStore.register({
@@ -30,6 +22,7 @@ const login = async () => {
     })
 
     if (!response.errors) {
+      console.log("RESPONSE AQUIIIII: ", response)
       signIn.value = false
       router.push('/')
     }
@@ -39,11 +32,19 @@ const login = async () => {
       email: email.value,
       password: password.value
     })
-  
+
     if (!response.errors) {
       router.push('/')
     }
   }
+}
+
+const checkErrors = (field) => {
+  const fieldErrors = errors.value.fields[field]
+  if (fieldErrors && fieldErrors._errors && fieldErrors._errors.length > 0) {
+    return fieldErrors._errors[0]
+  }
+  return null
 }
 </script>
 
@@ -91,7 +92,7 @@ const login = async () => {
         <button @click.prevent="signIn = false" class="text-sm text-[#308b76] font-semibold cursor-pointer">Login</button>
       </div>
 
-      <div v-if="errors.general" class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm">
+      <div v-if="errors?.general" class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm">
         <span class="text-sm text-red-500">{{ errors.general }}</span>
       </div>
     </div>

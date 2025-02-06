@@ -1,5 +1,4 @@
 <script setup>
-import { useAuthStore } from '@/stores/auth'
 import CNavbar from '@/components/CNavbar.vue'
 import CBalance from '@/components/CBalance.vue'
 import CFastActions from '@/components/CFastActions.vue'

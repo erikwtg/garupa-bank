@@ -11,7 +11,7 @@ export class TransferEntity {
   status?: string
   transactionType: string
   transferMethod?: string
-  beneficiaryAccountHolder?: number
+  beneficiaryAccountHolder?: string
   beneficiaryAccountNumber?: number
   beneficiaryAgencyNumber?: number
   beneficiaryBankCode?: number
@@ -44,7 +44,7 @@ export class TransferEntity {
     status?: string
     transactionType: string
     transferMethod?: string
-    beneficiaryAccountHolder?: number
+    beneficiaryAccountHolder?: string
     beneficiaryAccountNumber?: number
     beneficiaryAgencyNumber?: number
     beneficiaryBankCode?: number

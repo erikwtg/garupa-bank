@@ -37,11 +37,11 @@ export class AuthController {
       })
     } catch (error) {
       if (error instanceof ZodError) {
-        return response.status(400).json({ error: error.errors })
+        return response.status(400).json({ errors: error.errors })
       }
 
       if (error instanceof Error) {
-        return response.status(500).json({ error: error.message })
+        return response.status(500).json({ errors: error.message })
       }
     }
   }

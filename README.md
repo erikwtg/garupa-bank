@@ -97,6 +97,8 @@ Depois de executar o comando de inicialização, você pode acessar as aplicaç�
 - **WireMock**: http://wiremock:8080
 - **PostgreSQL**: http://postgres:5432
 
+Documentação da API: http://localhost:3000/api-docs
+
 ## Melhorias (Coisas que gostaria de ter feito)
 
 Embora o projeto tenha sido desenvolvido com as melhores práticas disponíveis dentro do tempo e dos requisitos do desafio, há algumas melhorias que gostaria de ter implementado:

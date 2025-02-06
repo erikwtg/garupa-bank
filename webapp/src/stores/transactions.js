@@ -27,7 +27,7 @@ export const useTransactionStore = defineStore("transactions", {
         }
 
         const accountStore = useAccountStore()
-        Object.assign(transactionParsedData, {
+        Object.assign(transactionParsedData.data, {
           accountId: accountStore.account[0].id
         })
 
@@ -36,19 +36,19 @@ export const useTransactionStore = defineStore("transactions", {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(transactionParsedData)
+          body: JSON.stringify(transactionParsedData.data)
         })
 
-        const data = await response.json()
+        const responseData = await response.json()
 
         if (response.ok) {
-          this.transactionList.push(data)
+          this.transactionList.push(responseData)
           this.errors = { fields: {}, general: null }
-          return data
+          return responseData
         } else {
           this.errors = {
-            fields: data.errors?.fields || {},
-            general: data.errors?.message || 'Erro ao processar transação'
+            fields: responseData.errors?.fields || {},
+            general: responseData.errors?.message || 'Erro ao processar transação'
           }
           return { errors: this.errors }
         }

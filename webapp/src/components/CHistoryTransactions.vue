@@ -10,7 +10,6 @@ const { transactionList } = storeToRefs(transactionsStore)
 onMounted(async () => {
   transactionsStore.fetchTransactions()
 })
-
 </script>
 
 <template>

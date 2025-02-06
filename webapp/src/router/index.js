@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import Dashboard from '@/views/Dashboard.vue'
 import Login from '@/views/Login.vue'
 import ErrorPage from '@/views/ErrorPage.vue'
 import { useAuthStore } from '@/stores/auth'
+import { getActivePinia } from 'pinia'
 
 const routes = [
   {
@@ -34,7 +34,12 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  if (!getActivePinia()) {
+    console.warn('[Pinia]: Pinia ainda não foi inicializado!')
+    return next()
+  }
+
   const authStore = useAuthStore()
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {

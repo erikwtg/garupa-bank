@@ -1,14 +1,12 @@
 <script setup>
 import { onMounted } from 'vue'
 import { formattedBalance } from '@/utils/formatter'
-import { useAccountStore } from '@/stores/account'
 import { storeToRefs } from 'pinia'
+import { useAccountStore } from '@/stores/account'
 
 const accountStore = useAccountStore()
 
-onMounted(() => {
-  accountStore.fetchAccounts()
-})
+onMounted(() => accountStore.fetchAccounts())
 
 const { account } = storeToRefs(accountStore)
 </script>

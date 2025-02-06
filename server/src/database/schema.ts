@@ -1,4 +1,4 @@
-import { pgTable, serial, text, numeric, integer, timestamp, uuid, foreignKey } from "drizzle-orm/pg-core"
+import { pgTable, serial, text, numeric, integer, timestamp, uuid, bigint } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -31,10 +31,10 @@ export const transactions = pgTable("transactions", {
   status: text('status').notNull(),
   transactionType: text("transaction_type").notNull(), // "TRANSFER", "PAYMENT", "DEPOSIT", "WITHDRAWAL"
   transferMethod: text("transfer_method"), // "TED", "DOC", "PIX"
-  beneficiaryAccountHolder: integer("beneficiary_account_holder"), 
-  beneficiaryAccountNumber: integer("beneficiary_account_number"), 
-  beneficiaryAgencyNumber: integer("beneficiary_agency_number"),
-  beneficiaryBankCode: integer("beneficiary_bank_code"),
+  beneficiaryAccountHolder: text("beneficiary_account_holder"), 
+  beneficiaryAccountNumber: bigint("beneficiary_account_number", { mode: "number" }), 
+  beneficiaryAgencyNumber: bigint("beneficiary_agency_number", { mode: "number" }),
+  beneficiaryBankCode: bigint("beneficiary_bank_code", { mode: "number" }),
   transactionDescription: text("transaction_description"),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),

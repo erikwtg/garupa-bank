@@ -21,7 +21,7 @@ export class TransferController {
       const dateNow = new Date()
       const dueDate = newTransfer?.dueDate ? new Date(newTransfer.dueDate) : null
       if (dueDate && dueDate < dateNow) {
-        return response.status(400).json({ error: "Não pode ser efetuado após a data de vencimento." })
+        return response.status(400).json({ errors: "Não pode ser efetuado após a data de vencimento." })
       }
 
       const scheduled = newTransfer?.expectedOn
@@ -33,7 +33,7 @@ export class TransferController {
       const createdTransfer = await transferService.create(newTransfer)
 
       if (!createdTransfer || createdTransfer.length === 0) {
-        return response.status(500).json({ error: "Erro ao criar a transferência." })
+        return response.status(500).json({ errors: "Erro ao criar a transferência." })
       }
 
       // Envia a ordem para o fila
@@ -52,11 +52,11 @@ export class TransferController {
       return response.status(201).json({ message: "Transferência efetuada com sucesso!" })
     } catch(error) {
       if (error instanceof ZodError) {
-        return response.status(400).json({ error: error.errors })
+        return response.status(400).json({ errors: error.errors })
       }
 
       if (error instanceof Error) {
-        return response.status(500).json({ error: error.message })
+        return response.status(500).json({ errors: error.message })
       }
     }
   }
@@ -70,11 +70,11 @@ export class TransferController {
       return response.status(200).json(allTransfers)
     } catch(error) {
       if (error instanceof ZodError) {
-        return response.status(400).json({ error: error.errors })
+        return response.status(400).json({ errors: error.errors })
       } 
   
       if (error instanceof Error) {
-        return response.status(500).json({ error: error.message })
+        return response.status(500).json({ errors: error.message })
       }
     }
   }
@@ -94,11 +94,11 @@ export class TransferController {
       return response.status(200).json(transferById)
     } catch(error) {
       if (error instanceof ZodError) {
-        return response.status(400).json({ error: error.errors })
+        return response.status(400).json({ errors: error.errors })
       } 
 
       if (error instanceof Error) {
-        return response.status(500).json({ error: error.message })
+        return response.status(500).json({ errors: error.message })
       }
     }
   }
@@ -113,11 +113,11 @@ export class TransferController {
       return response.status(200).json(transferByAccountId)
     } catch(error) {
       if (error instanceof ZodError) {
-        return response.status(400).json({ error: error.errors })
+        return response.status(400).json({ errors: error.errors })
       }
 
       if (error instanceof Error) {
-        return response.status(500).json({ error: error.message })
+        return response.status(500).json({ errors: error.message })
       }
     }
   }

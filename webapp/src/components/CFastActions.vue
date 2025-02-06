@@ -122,7 +122,7 @@ const checkErrors = (field) => {
           <div class="mt-1 relative rounded-md shadow-sm">
             <input
               id="beneficiaryAccountHolder"
-              v-model.nu="formData.beneficiaryAccountHolder"
+              v-model="formData.beneficiaryAccountHolder"
               type="text"
               class="peerblock w-full pl-3 pr-12 rounded-md border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
               placeholder="Nome do Beneficiado"

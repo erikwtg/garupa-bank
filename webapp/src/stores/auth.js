@@ -2,8 +2,6 @@ import { defineStore } from "pinia"
 import router from "@/router"
 import { registerSchema, loginSchema } from "@/schemas/authSchema"
 
-import { useTransactionStore } from "./transactions"
-
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
@@ -38,7 +36,7 @@ export const useAuthStore = defineStore("auth", {
             "Accept": "application/json"
           },
           credentials: "include",
-          body: JSON.stringify(userData)
+          body: JSON.stringify(validatedData.data)
         })
 
         const responseData = await response.json()
@@ -46,21 +44,22 @@ export const useAuthStore = defineStore("auth", {
         if (!response.ok) {
           this.errors = {
             fields: responseData.errors?.fields || {},
-            general: responseData.errors?.message || 'Erro ao fazer login! Credenciais inválidas.'
+            general: (responseData?.error || responseData?.errors) ? responseData.errors : 'Erro ao fazer login! Credenciais inválidas.'
           }
           return { errors: this.errors }
         }
 
         const { data: { token, user }, message } = responseData
-        this.token = token;
-        this.user = user;
-        useTransactionStore().fetchTransactions()
+        this.token = token
+        this.user = user
+
         return { data: { token, user }, message };
 
       } catch (error) {
+        console.log("ERROR AO FAZER LOGIN: ", error)
         this.errors = {
           fields: {},
-          general: 'Erro de conexão. Tente novamente.'
+          general: 'Falha ao fazer login. Tente novamente.'
         }
         return { errors: error }
       }
@@ -68,11 +67,11 @@ export const useAuthStore = defineStore("auth", {
     logout() {
       this.user = null
       this.token = null
-      localStorage.removeItem('token')
       this.errors = {
         fields: {},
         general: null
       }
+      localStorage.removeItem('token')
       router.push('/login')
     },
     async register(userData) {
@@ -110,13 +109,14 @@ export const useAuthStore = defineStore("auth", {
         const { data: { token, user }, message } = responseData
         this.user = user
         this.token = token
-        localStorage.setItem('token', token)
+
         return { data: { token, user }, message };
 
       } catch (error) {
+        console.log("ERROR AO REGISTRAR USUARIO: ", error)
         this.errors = {
           fields: {},
-          general: 'Erro ao registrar usuário. Tente novamente.'
+          general: 'Falha ao registrar usuário. Tente novamente.'
         }
         return { errors: this.errors }
       }

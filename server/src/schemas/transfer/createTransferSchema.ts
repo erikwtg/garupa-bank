@@ -4,7 +4,7 @@ export const createTransferSchema = z.object({
   externalId: z.string().optional(),
   orderId: z.string().optional(),
   accountId: z.number(),
-  amount: z.number().positive("amount deve ser um número positivo"),
+  amount: z.number().positive("Amount deve ser um número positivo"),
   status: z.string().optional(),
   transactionType: z.string().min(1, "transactionType é obrigatório"),
   transferMethod: z.string().min(1, "transferMethod é obrigatório"),
