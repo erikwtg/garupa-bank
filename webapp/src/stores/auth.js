@@ -19,6 +19,12 @@ export const useAuthStore = defineStore("auth", {
     userEmail: (state) => state.user?.email,
   },
   actions: {
+    resetErrors() {
+      this.errors = {
+        fields: {},
+        general: null
+      }
+    },
     async login(userData) {
       try {
         const validatedData = loginSchema.safeParse(userData)

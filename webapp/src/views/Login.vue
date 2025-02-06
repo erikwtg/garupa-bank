@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { ref, onMounted } from 'vue'
+import { storeToRefs, getActivePinia } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -12,6 +12,12 @@ const name = ref('')
 const email = ref('')
 const password = ref('')
 const signIn = ref(false)
+
+onMounted(() => {
+  if (getActivePinia()) {
+    authStore.resetErrors()
+  }
+})
 
 const login = async () => {
   if (signIn.value) {
@@ -62,6 +68,9 @@ const checkErrors = (field) => {
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
         :class="{ 'border-red-500': checkErrors('name') }"
       />
+      <!-- <p v-if="checkErrors('name')" class="mt-2 text-sm text-red-600">
+        {{ Mensagem de erro }}
+      </p> -->
       <input
         v-model="email"
         type="email"
@@ -69,6 +78,9 @@ const checkErrors = (field) => {
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
         :class="{ 'border-red-500': checkErrors('email') }"
       />
+      <!-- <p v-if="checkErrors('email')" class="mt-2 text-sm text-red-600">
+        {{ Mensagem de erro }}
+      </p> -->
       <input
         v-model="password"
         type="password"
@@ -76,7 +88,9 @@ const checkErrors = (field) => {
         class="w-fit px-4 py-2 bg-white rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:border-transparent transition-all duration-200 ease-in-out shadow-sm"
         :class="{ 'border-red-500': checkErrors('password') }"
       />
-
+      <!-- <p v-if="checkErrors('password')" class="mt-1 text-sm text-red-600">
+        {{ Mensagem de erro }}
+      </p> -->
       <button @click="login" class="min-w-52 px-4 py-2 bg-[#3DA88F] text-white rounded-lg hover:bg-[#44B399] focus:outline-none focus:ring-2 focus:ring-[#4BBEA3] focus:ring-offset-2 transition-all duration-200 ease-in-out shadow-sm font-semibold cursor-pointer">
         {{ signIn ? 'Cadastrar' : 'Login' }}
       </button>
