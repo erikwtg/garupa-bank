@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useTransactionStore } from '@/stores/transactions'
 
 const transactionStore = useTransactionStore()
+const { errors } = storeToRefs(transactionStore)
 
 const showTransferModal = ref(false)
 const transactionSuccess = ref(false)
@@ -26,11 +27,9 @@ const handleTransfer = async () => {
   
   setTimeout(() => {
     loading.value = false
-    if (!errors.value && transactionSuccess.value) showTransferModal.value = false
+    if ((!errors.value.general || !errors.value.fields) && transactionSuccess.value) showTransferModal.value = false
   }, 3000)
 }
-
-const { errors } = storeToRefs(transactionStore)
 
 const checkErrors = (field) => {
   const fieldErrors = errors.value.fields[field]
