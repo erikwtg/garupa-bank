@@ -13,6 +13,12 @@ services:
     environment:
       DB_URL: postgres
       NODE_ENV: development
+      DATABASE_URL: 'postgres://postgres:garupa@postgres:5432/postgres'
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: garupa
+      DB_NAME: postgres
+      DB_PORT: 5432
     working_dir: /app
     volumes:
       - ./server:/app
