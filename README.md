@@ -36,8 +36,7 @@ Cada serviço possui seu próprio Dockerfile para construção da imagem individ
 ## Requisitos
 
 - **Docker** (com Docker Compose) instalado.
-- **Node.js** (caso precise rodar os containers manualmente ou em caso de debugging no backend).
-- Acesso ao terminal de sua máquina para rodar os comandos.
+- **Node.js**
 
 ## Instalação e Execução
 
@@ -46,13 +45,13 @@ Cada serviço possui seu próprio Dockerfile para construção da imagem individ
 Primeiro, clone este repositório para sua máquina local:
 
 ```bash
-git clone https://github.com/seu-usuario/garupa-bank.git
+git clone https://github.com/erikwtg/garupa-bank.git
 cd garupa-bank
 ```
 
 ### 2. Construção e Execução em Modo Desenvolvimento
 
-Certifique-se de que o Docker e o Docker Compose estão instalados corretamente. O projeto já possui um arquivo docker-compose.yml configurado para orquestrar os serviços.
+O projeto já possui um arquivo docker-compose.yml configurado para orquestrar os serviços.
 
 ### 3. Build e Start dos Containers
 
@@ -71,15 +70,15 @@ docker-compose -f docker-compose.yml up -d --build
 
 Esse comando irá:
 
-Construir os containers necessários com base nos Dockerfile de cada pasta.
+Criar a rede garupa-bank-network.
 
-Rodar os serviços na porta padrão.
+Construir os containers necessários.
+
+Rodar os serviços na porta configuradas no docker-compose.yml.
 
 Criar o banco de dados PostgreSQL.
 
 Inicializar os serviços WireMock, RabbitMQ e o consumo das filas.
-
-Criar a rede garupa-bank-network.
 
 ### DESIGN PATTERNS E ARQUITETURA
 
